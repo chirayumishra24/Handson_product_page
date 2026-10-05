@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ShoppingCart, ArrowLeft, Check, ChevronDown, Coins, Star, BookOpen, Award, Package } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Product } from "@/types/product";
@@ -9,6 +9,8 @@ import { useCartStore } from "@/store/cartStore";
 import { formatINR } from "@/lib/format";
 import { categoryTheme, swatches } from "@/lib/theme";
 import ProductCard from "@/components/store/ProductCard";
+import Burst from "@/components/store/Burst";
+import { BRAND } from "@/lib/brand";
 
 type ImageKey = "realistic" | "stylized";
 const imageLabels: Record<ImageKey, string> = { realistic: "In use", stylized: "What's inside" };
@@ -19,13 +21,24 @@ export default function ProductDetailClient({ product, related }: { product: Pro
   const setCartOpen = useCartStore((s) => s.setCartOpen);
   const [activeImage, setActiveImage] = useState<ImageKey>(product.images.realistic ? "realistic" : "stylized");
   const [added, setAdded] = useState(false);
+  const [bursts, setBursts] = useState(0);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  // Phones: a sticky buy bar shows while the main Add to Cart button is off screen,
+  // and steps aside once the visitor reaches the footer.
+  const buyRef = useRef<HTMLDivElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
+  const buyInView = useInView(buyRef);
+  // A huge top margin counts the marker as "seen" once it is anywhere above the
+  // bottom of the screen, so the bar stays hidden over the footer.
+  const endInView = useInView(endRef, { margin: "100000px 0px 0px 0px" });
+  const showBar = !buyInView && !endInView;
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const handleAdd = () => {
     addItem(product);
     setAdded(true);
+    setBursts((n) => n + 1);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setAdded(false), 2500);
   };
@@ -45,7 +58,7 @@ export default function ProductDetailClient({ product, related }: { product: Pro
   const included = [
     { icon: Package, swatch: swatches.sky, text: `${product.materials.length} materials, ready to use` },
     { icon: BookOpen, swatch: swatches.create, text: "Step-by-step guide book with video QR codes" },
-    { icon: Award, swatch: swatches.design, text: "Skillizee certificate after the final pitch" },
+    { icon: Award, swatch: swatches.design, text: `${BRAND.name} certificate after the final pitch` },
   ];
 
   return (
@@ -53,12 +66,12 @@ export default function ProductDetailClient({ product, related }: { product: Pro
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Link
           href="/#kits"
-          className="clay-sm inline-flex items-center gap-1.5 rounded-full bg-panel px-4 py-2 font-display text-sm font-semibold text-ink transition-transform hover:-translate-x-0.5"
+          className="clay-sm inline-flex min-h-11 items-center gap-1.5 rounded-full bg-panel px-4 py-2 font-display text-sm font-semibold text-ink transition-transform hover:-translate-x-0.5"
         >
           <ArrowLeft className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" /> All Kits
         </Link>
 
-        <div className="mt-8 grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
+        <div className="mt-6 grid grid-cols-1 gap-10 sm:mt-8 lg:grid-cols-12 lg:gap-14">
           {/* Gallery */}
           <motion.div
             initial={{ opacity: 0, y: 20, rotate: -2 }}
@@ -66,8 +79,8 @@ export default function ProductDetailClient({ product, related }: { product: Pro
             transition={spring}
             className="lg:col-span-7"
           >
-            <div className="clay rounded-[40px] bg-panel p-3">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[30px] bg-panel-muted">
+            <div className="clay rounded-[30px] bg-panel p-2.5 sm:rounded-[40px] sm:p-3">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[22px] bg-panel-muted sm:rounded-[30px]">
                 <Image
                   key={current.src}
                   src={current.src}
@@ -81,7 +94,7 @@ export default function ProductDetailClient({ product, related }: { product: Pro
             </div>
 
             {images.length > 1 && (
-              <div className="mt-5 flex gap-4" role="group" aria-label="Product images">
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:flex sm:gap-4" role="group" aria-label="Product images">
                 {images.map((img) => {
                   const isActive = img.key === current.key;
                   return (
@@ -90,14 +103,14 @@ export default function ProductDetailClient({ product, related }: { product: Pro
                       type="button"
                       onClick={() => setActiveImage(img.key)}
                       aria-pressed={isActive}
-                      className={`flex items-center gap-3 rounded-[22px] p-2 pr-4 transition-transform active:scale-95 ${
+                      className={`flex min-w-0 items-center gap-2.5 rounded-[22px] p-2 pr-3 transition-transform active:scale-95 sm:gap-3 sm:pr-4 ${
                         isActive ? `clay-pressed ${swatch.chip}` : "clay-sm bg-panel text-ink hover:-translate-y-0.5"
                       }`}
                     >
-                      <span className="relative block h-14 w-20 overflow-hidden rounded-2xl">
+                      <span className="relative block h-12 w-14 shrink-0 overflow-hidden rounded-2xl sm:h-14 sm:w-20">
                         <Image src={img.src} alt="" fill sizes="80px" className="object-cover" />
                       </span>
-                      <span className="font-display text-sm font-semibold">{img.label}</span>
+                      <span className="truncate font-display text-[13px] font-semibold sm:text-sm">{img.label}</span>
                     </button>
                   );
                 })}
@@ -124,15 +137,15 @@ export default function ProductDetailClient({ product, related }: { product: Pro
                 </span>
               )}
             </p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl">
+            <h1 className="mt-4 font-display text-[2.1rem] font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl">
               {product.name}
             </h1>
-            <p className={`mt-3 font-display text-xl font-semibold ${swatch.text}`}>{product.tagline}</p>
+            <p className={`mt-3 font-display text-lg font-semibold sm:text-xl ${swatch.text}`}>{product.tagline}</p>
             <p className="mt-4 font-medium leading-relaxed text-ink-muted">{product.description}</p>
 
-            <div className="clay mt-8 rounded-[32px] bg-panel p-6">
+            <div ref={buyRef} className="clay mt-8 rounded-[28px] bg-panel p-5 sm:rounded-[32px] sm:p-6">
               <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1 tabular-nums">
-                <span className="font-display text-5xl font-bold text-ink">{formatINR(product.price)}</span>
+                <span className="font-display text-4xl font-bold text-ink sm:text-5xl">{formatINR(product.price)}</span>
                 {product.originalPrice && (
                   <>
                     <span className="text-lg font-semibold text-ink-muted line-through">
@@ -145,8 +158,8 @@ export default function ProductDetailClient({ product, related }: { product: Pro
                   </>
                 )}
               </p>
-              <p className="mt-3 inline-flex items-center gap-2 rounded-2xl bg-accent-soft px-3 py-2 font-bold text-accent-ink">
-                <Coins className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
+              <p className="mt-3 inline-flex items-center gap-2 rounded-2xl bg-accent-soft px-3 py-2 text-sm font-bold text-accent-ink sm:text-base">
+                <Coins className="h-5 w-5 shrink-0" strokeWidth={2.5} aria-hidden="true" />
                 Your child can earn up to {formatINR(product.profit)} profit
               </p>
 
@@ -154,7 +167,7 @@ export default function ProductDetailClient({ product, related }: { product: Pro
                 <button
                   type="button"
                   onClick={handleAdd}
-                  className={`flex flex-1 items-center justify-center gap-2 rounded-[22px] py-4 font-display text-lg font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] ${
+                  className={`relative flex flex-1 items-center justify-center gap-2 rounded-[22px] py-4 font-display text-lg font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] ${
                     added ? "clay-pressed bg-accent-soft text-accent-ink" : "clay bg-accent text-on-accent"
                   }`}
                 >
@@ -164,6 +177,7 @@ export default function ProductDetailClient({ product, related }: { product: Pro
                     <ShoppingCart className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
                   )}
                   {added ? "Added to Cart" : "Add to Cart"}
+                  <Burst fire={bursts} />
                 </button>
                 {added && (
                   <button
@@ -192,9 +206,9 @@ export default function ProductDetailClient({ product, related }: { product: Pro
             </ul>
 
             <details className="clay group mt-8 rounded-[28px] bg-panel">
-              <summary className="flex cursor-pointer list-none items-center justify-between rounded-[28px] px-6 py-5 font-display text-lg font-semibold text-ink [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-[28px] px-5 py-4 font-display text-lg font-semibold text-ink sm:px-6 sm:py-5 [&::-webkit-details-marker]:hidden">
                 What&apos;s in the Box ({product.materials.length} items)
-                <span className="clay-sm flex h-9 w-9 items-center justify-center rounded-xl bg-panel-muted">
+                <span className="clay-sm flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-panel-muted">
                   <ChevronDown
                     className="h-5 w-5 transition-transform group-open:rotate-180"
                     strokeWidth={2.5}
@@ -202,7 +216,7 @@ export default function ProductDetailClient({ product, related }: { product: Pro
                   />
                 </span>
               </summary>
-              <div className="px-6 pb-5">
+              <div className="px-5 pb-5 sm:px-6">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Materials included in the {product.name} kit</caption>
                   <thead>
@@ -242,18 +256,53 @@ export default function ProductDetailClient({ product, related }: { product: Pro
         </div>
 
         {related.length > 0 && (
-          <section aria-labelledby="related-title" className="mt-24">
+          <section aria-labelledby="related-title" className="mt-16 sm:mt-24">
             <h2 id="related-title" className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
               More Kits to <span className="marker">Explore</span>
             </h2>
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-6 grid grid-cols-1 gap-5 sm:mt-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
               {related.map((p, i) => (
                 <ProductCard key={p.id} product={p} index={i} />
               ))}
             </div>
           </section>
         )}
+        <div ref={endRef} aria-hidden="true" className="h-px" />
       </div>
+
+      <AnimatePresence>
+        {showBar && (
+          <motion.div
+            initial={{ y: "120%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "120%" }}
+            transition={{ type: "spring", stiffness: 260, damping: 28 }}
+            className="fixed inset-x-0 bottom-0 z-30 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden"
+          >
+            <div className="clay mx-auto flex max-w-xl items-center gap-3 rounded-[26px] bg-panel/95 p-2.5 pl-4 backdrop-blur-xl">
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-display text-sm font-semibold text-ink">{product.name}</p>
+                <p className="text-sm font-bold tabular-nums text-ink-muted">{formatINR(product.price)}</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleAdd}
+                className={`relative inline-flex min-h-12 shrink-0 items-center gap-2 rounded-[20px] px-5 font-display font-semibold transition-transform active:scale-95 ${
+                  added ? "clay-pressed bg-accent-soft text-accent-ink" : "clay-sm bg-accent text-on-accent"
+                }`}
+              >
+                {added ? (
+                  <Check className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+                ) : (
+                  <ShoppingCart className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
+                )}
+                {added ? "Added" : "Add to Cart"}
+                <Burst fire={bursts} />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

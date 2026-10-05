@@ -10,6 +10,7 @@ const links = [
   { href: "/#kits", label: "Kits", hover: "hover:bg-grow-soft hover:text-grow-ink" },
   { href: "/#how-it-works", label: "How It Works", hover: "hover:bg-build-soft hover:text-build-ink" },
   { href: "/#compare", label: "Compare", hover: "hover:bg-design-soft hover:text-design-ink" },
+  { href: "/#faq", label: "FAQ", hover: "hover:bg-sky-soft hover:text-sky-ink" },
 ];
 
 export default function Navbar() {
@@ -28,17 +29,17 @@ export default function Navbar() {
   const cartLabel = hydrated && count > 0 ? `Open cart, ${count} ${count === 1 ? "item" : "items"}` : "Open cart";
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:px-5">
+    <header className="fixed inset-x-0 top-0 z-40 px-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-5">
       <div className="clay mx-auto max-w-7xl rounded-[28px] bg-panel/90 backdrop-blur-xl">
         <nav aria-label="Main" className="flex h-16 items-center justify-between pl-3 pr-2 sm:pl-4">
-          <Logo onClick={() => setMobileOpen(false)} />
+          <Logo id="nav-logo" onClick={() => setMobileOpen(false)} />
 
           <ul className="hidden items-center gap-1 md:flex">
             {links.map((l) => (
               <li key={l.href}>
                 <Link
                   href={l.href}
-                  className={`rounded-2xl px-4 py-2 font-display text-[15px] font-semibold text-ink-muted transition-colors ${l.hover}`}
+                  className={`block rounded-2xl px-4 py-3 font-display text-[15px] font-semibold text-ink-muted transition-colors ${l.hover}`}
                 >
                   {l.label}
                 </Link>

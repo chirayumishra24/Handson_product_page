@@ -36,17 +36,21 @@ export default function ProductGrid() {
   const filtered = active === "all" ? products : products.filter((p) => p.category === active);
 
   return (
-    <section id="kits" className="py-20 md:py-28">
+    <section id="kits" className="py-16 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+        <h2 className="font-display text-[2.1rem] font-bold leading-tight tracking-tight text-ink sm:text-5xl">
           Choose Your <span className="marker">Kit</span>
         </h2>
-        <p className="mt-3 max-w-[60ch] text-lg font-medium text-ink-muted">
+        <p className="mt-3 max-w-[60ch] text-base font-medium text-ink-muted sm:text-lg">
           {products.length} hands-on kits. Each one teaches your child to build, brand, price and sell a real product.
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-          <div role="group" aria-label="Filter kits by category" className="flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
+          <div
+            role="group"
+            aria-label="Filter kits by category"
+            className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 py-2 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:py-0 [&::-webkit-scrollbar]:hidden"
+          >
             {categories.map((cat) => {
               const isActive = active === cat.value;
               const theme = categoryTheme[cat.value];
@@ -57,7 +61,7 @@ export default function ProductGrid() {
                   type="button"
                   aria-pressed={isActive}
                   onClick={() => setCategory(cat.value)}
-                  className={`inline-flex items-center gap-2 rounded-full py-2 pl-2 pr-5 font-display text-[15px] font-semibold transition-transform active:scale-95 ${
+                  className={`inline-flex shrink-0 snap-start items-center gap-2 rounded-full py-2 pl-2 pr-5 font-display text-[15px] font-semibold transition-transform active:scale-95 ${
                     isActive ? `clay-pressed ${swatch.chip}` : "clay-sm bg-panel text-ink hover:-translate-y-0.5"
                   }`}
                 >
@@ -75,7 +79,7 @@ export default function ProductGrid() {
         </div>
 
         {filtered.length > 0 ? (
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
             {filtered.map((product, i) => (
               <ProductCard key={product.id} product={product} index={i} />
             ))}

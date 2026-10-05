@@ -5,24 +5,34 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import MotionProvider from "@/components/layout/MotionProvider";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import { BRAND, SITE_URL } from "@/lib/brand";
 
 // Rounded, friendly faces that young readers find easy and fun to read.
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 const fredoka = Fredoka({ subsets: ["latin"], variable: "--font-fredoka", weight: ["500", "600", "700"] });
 
 export const metadata: Metadata = {
-  title: "Skillizee Kits | Hands-On Experience Kits for Young Entrepreneurs",
-  description:
-    "8 hands-on kits that teach children aged 8-16 to build, brand, price and sell real products. Real materials, real business, real profit.",
-  keywords: ["skillizee", "kids entrepreneurship", "hands-on kits", "learning kits", "young entrepreneurs", "STEM kits India"],
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${BRAND.name} | Hands-On Business Kits for Young Entrepreneurs`,
+    template: `%s | ${BRAND.name}`,
+  },
+  description: BRAND.description,
+  applicationName: BRAND.name,
+  keywords: [BRAND.name.toLowerCase(), "kids entrepreneurship", "hands-on kits", "learning kits", "young entrepreneurs", "STEM kits India"],
   openGraph: {
-    title: "Skillizee Kits | Turn Your Child Into a Young Entrepreneur",
+    title: `${BRAND.name} | Turn Your Child Into a Young Entrepreneur`,
     description: "Real materials. Real products. Real profit. 8 unique kits for ages 8-16.",
+    siteName: BRAND.name,
     type: "website",
+    locale: "en_IN",
   },
 };
 
 export const viewport: Viewport = {
+  // Lets the notch-aware padding (env(safe-area-inset-*)) apply on iPhones.
+  viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#f4f7ff" },
     { media: "(prefers-color-scheme: dark)", color: "#12162b" },
@@ -44,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CartDrawer />
           <main id="main">{children}</main>
           <Footer />
+          <WhatsAppButton />
         </MotionProvider>
       </body>
     </html>

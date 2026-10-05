@@ -2,6 +2,7 @@ import { products, getProductBySlug } from "@/data/products";
 import { notFound } from "next/navigation";
 import ProductDetailClient from "./ProductDetailClient";
 import type { Metadata } from "next";
+import { BRAND, SITE_URL } from "@/lib/brand";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -15,10 +16,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return { title: "Kit Not Found" };
 
   return {
-    title: `${product.name} | Skillizee Kit | ₹${product.price}`,
+    title: `${product.name} Kit | ₹${product.price}`,
     description: product.description,
     openGraph: {
-      title: `${product.name} | Skillizee Kit`,
+      title: `${product.name} Kit | ${BRAND.name}`,
       description: product.tagline,
       images: [product.images.realistic || product.images.stylized || ""],
     },
@@ -37,5 +38,29 @@ export default async function ProductPage({ params }: Props) {
     ...others.filter((p) => p.category !== product.category),
   ].slice(0, 4);
 
-  return <ProductDetailClient product={product} related={related} />;
+  const productLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `${product.name} Kit`,
+    description: product.description,
+    image: [product.images.realistic, product.images.stylized].filter(Boolean).map((src) => `${SITE_URL}${src}`),
+    brand: { "@type": "Brand", name: BRAND.name },
+    offers: {
+      "@type": "Offer",
+      url: `${SITE_URL}/kits/${product.slug}`,
+      priceCurrency: "INR",
+      price: product.price,
+      availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd).replace(/</g, "\\u003c") }}
+      />
+      <ProductDetailClient product={product} related={related} />
+    </>
+  );
 }

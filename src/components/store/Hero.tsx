@@ -24,37 +24,37 @@ const toys: { icon: LucideIcon; className: string; tilt: string; delay: string; 
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pb-20 pt-32 md:pb-28 lg:pt-36">
+    <section className="relative overflow-hidden pb-16 pt-28 sm:pt-32 md:pb-28 lg:pt-36">
       {/* Soft colour glows behind the photo. */}
       <div aria-hidden="true" className="pointer-events-none absolute right-[-10%] top-10 h-[480px] w-[480px] rounded-full bg-sun/30 blur-[90px]" />
       <div aria-hidden="true" className="pointer-events-none absolute right-[25%] top-[45%] h-[360px] w-[360px] rounded-full bg-create/20 blur-[90px]" />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8">
         <div className="lg:col-span-6">
           <motion.p
             {...rise(0)}
-            className="clay-sm inline-flex items-center gap-2 rounded-full bg-create-soft px-4 py-2 text-sm font-bold text-create-ink"
+            className="clay-sm inline-flex items-center gap-2 rounded-2xl bg-create-soft px-4 py-2 text-[13px] font-bold text-create-ink sm:rounded-full sm:text-sm"
           >
-            <Sparkles className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+            <Sparkles className="h-4 w-4 shrink-0" strokeWidth={2.5} aria-hidden="true" />
             Hands-on business kits for ages 8 to 16
           </motion.p>
 
           <motion.h1
             {...rise(0.06)}
-            className="mt-6 font-display text-[2.6rem] font-bold leading-[1.08] tracking-tight text-ink sm:text-6xl xl:text-[4rem]"
+            className="mt-6 font-display text-[2.3rem] font-bold leading-[1.08] tracking-tight text-ink min-[380px]:text-[2.6rem] sm:text-6xl xl:text-[4rem]"
           >
             Turn Your Child Into a <span className="marker">Young Entrepreneur</span>
           </motion.h1>
 
-          <motion.p {...rise(0.12)} className="mt-6 max-w-[44ch] text-lg font-medium leading-relaxed text-ink-muted">
+          <motion.p {...rise(0.12)} className="mt-5 max-w-[44ch] text-base font-medium leading-relaxed text-ink-muted sm:mt-6 sm:text-lg">
             Real materials, real products, real profit. Each kit has everything your child needs to build, brand and
             sell.
           </motion.p>
 
-          <motion.div {...rise(0.18)} className="mt-9 flex flex-wrap gap-4">
+          <motion.div {...rise(0.18)} className="mt-8 grid grid-cols-1 gap-3 min-[400px]:flex min-[400px]:flex-wrap sm:mt-9 sm:gap-4">
             <Link
               href="#kits"
-              className="clay group inline-flex items-center gap-2 rounded-[22px] bg-accent px-7 py-4 font-display text-lg font-semibold text-on-accent transition-transform hover:-translate-y-1 active:translate-y-0 active:scale-[0.98]"
+              className="clay group inline-flex items-center justify-center gap-2 rounded-[22px] bg-accent px-7 py-4 font-display text-lg font-semibold text-on-accent transition-transform hover:-translate-y-1 active:translate-y-0 active:scale-[0.98]"
             >
               Shop All Kits
               <ArrowRight
@@ -65,7 +65,7 @@ export default function Hero() {
             </Link>
             <Link
               href="#how-it-works"
-              className="clay inline-flex items-center rounded-[22px] bg-panel px-7 py-4 font-display text-lg font-semibold text-ink transition-transform hover:-translate-y-1 active:translate-y-0 active:scale-[0.98]"
+              className="clay inline-flex items-center justify-center rounded-[22px] bg-panel px-7 py-4 font-display text-lg font-semibold text-ink transition-transform hover:-translate-y-1 active:translate-y-0 active:scale-[0.98]"
             >
               How It Works
             </Link>

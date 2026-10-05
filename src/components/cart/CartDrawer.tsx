@@ -82,7 +82,7 @@ export default function CartDrawer() {
             transition={{ type: "spring", damping: 30, stiffness: 260 }}
             className="clay fixed right-0 top-0 z-50 flex h-dvh w-full max-w-md flex-col bg-panel sm:right-3 sm:top-3 sm:h-[calc(100dvh-1.5rem)] sm:rounded-[36px]"
           >
-            <div className="flex items-center justify-between px-6 pb-3 pt-5">
+            <div className="flex items-center justify-between px-5 pb-3 pt-[max(1.25rem,env(safe-area-inset-top))] sm:px-6">
               <h2 id="cart-title" className="font-display text-2xl font-bold text-ink">
                 Your Cart{" "}
                 {count > 0 && (
@@ -102,7 +102,7 @@ export default function CartDrawer() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-4">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6">
               {items.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
                   <span className="clay animate-float flex h-20 w-20 items-center justify-center rounded-[26px] bg-sun text-ink">
@@ -149,7 +149,7 @@ export default function CartDrawer() {
                                 type="button"
                                 onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                                 aria-label={`Decrease quantity of ${item.product.name}`}
-                                className="flex h-9 w-9 items-center justify-center rounded-l-xl text-ink hover:text-grow-ink active:scale-90"
+                                className="flex h-11 w-11 items-center justify-center rounded-l-xl text-ink hover:text-grow-ink active:scale-90"
                               >
                                 <Minus className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
                               </button>
@@ -160,7 +160,7 @@ export default function CartDrawer() {
                                 type="button"
                                 onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                                 aria-label={`Increase quantity of ${item.product.name}`}
-                                className="flex h-9 w-9 items-center justify-center rounded-r-xl text-ink hover:text-grow-ink active:scale-90"
+                                className="flex h-11 w-11 items-center justify-center rounded-r-xl text-ink hover:text-grow-ink active:scale-90"
                               >
                                 <Plus className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
                               </button>
@@ -169,7 +169,7 @@ export default function CartDrawer() {
                               type="button"
                               onClick={() => removeItem(item.product.id)}
                               aria-label={`Remove ${item.product.name} from cart`}
-                              className="rounded-xl p-2 text-ink-muted transition-colors hover:bg-create-soft hover:text-create-ink"
+                              className="flex h-11 w-11 items-center justify-center rounded-xl text-ink-muted transition-colors hover:bg-create-soft hover:text-create-ink"
                             >
                               <Trash2 className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
                             </button>
@@ -183,17 +183,18 @@ export default function CartDrawer() {
             </div>
 
             {items.length > 0 && (
-              <div className="space-y-3 px-6 pb-6 pt-4">
+              <div className="space-y-3 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 sm:px-6">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-ink-muted">Subtotal</span>
                   <span className="font-display text-2xl font-bold tabular-nums text-ink">{formatINR(subtotal)}</span>
                 </div>
-                <button
-                  type="button"
-                  className="clay w-full rounded-[22px] bg-accent py-4 font-display text-lg font-semibold text-on-accent transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+                <Link
+                  href="/checkout"
+                  onClick={close}
+                  className="clay flex min-h-14 w-full items-center justify-center rounded-[22px] bg-accent font-display text-lg font-semibold text-on-accent transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
                 >
                   Proceed to Checkout
-                </button>
+                </Link>
                 {confirmClear ? (
                   <div className="flex items-center justify-center gap-3 text-sm">
                     <span className="font-semibold text-ink-muted">Remove all kits?</span>
@@ -203,14 +204,14 @@ export default function CartDrawer() {
                         clearCart();
                         setConfirmClear(false);
                       }}
-                      className="rounded-xl px-3 py-1.5 font-bold text-create-ink hover:bg-create-soft"
+                      className="min-h-11 rounded-xl px-3 font-bold text-create-ink hover:bg-create-soft"
                     >
                       Yes, Clear
                     </button>
                     <button
                       type="button"
                       onClick={() => setConfirmClear(false)}
-                      className="rounded-xl px-3 py-1.5 font-bold text-ink hover:bg-panel-muted"
+                      className="min-h-11 rounded-xl px-3 font-bold text-ink hover:bg-panel-muted"
                     >
                       Cancel
                     </button>
@@ -219,7 +220,7 @@ export default function CartDrawer() {
                   <button
                     type="button"
                     onClick={() => setConfirmClear(true)}
-                    className="w-full py-2 text-sm font-semibold text-ink-muted transition-colors hover:text-create-ink"
+                    className="min-h-11 w-full text-sm font-semibold text-ink-muted transition-colors hover:text-create-ink"
                   >
                     Clear Cart
                   </button>

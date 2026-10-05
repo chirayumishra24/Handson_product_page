@@ -4,23 +4,24 @@ import { ChevronRight } from "lucide-react";
 import { products } from "@/data/products";
 import { formatINR } from "@/lib/format";
 import { categoryTheme, swatches } from "@/lib/theme";
+import { BRAND } from "@/lib/brand";
 
 const thumb = (p: (typeof products)[number]) => p.images.realistic || p.images.stylized || "";
 const chip = (p: (typeof products)[number]) => swatches[categoryTheme[p.category].swatch].chip;
 
 export default function ComparisonTable() {
   return (
-    <section id="compare" className="py-20 md:py-28">
+    <section id="compare" className="py-16 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">Compare All Kits</h2>
-        <p className="mt-3 max-w-[60ch] text-lg font-medium text-ink-muted">
+        <h2 className="font-display text-[2.1rem] font-bold leading-tight tracking-tight text-ink sm:text-5xl">Compare All Kits</h2>
+        <p className="mt-3 max-w-[60ch] text-base font-medium text-ink-muted sm:text-lg">
           Price, age range, materials and the profit your child can make, side by side.
         </p>
 
-        {/* Desktop and tablet: a real table. */}
-        <div className="clay mt-10 hidden overflow-hidden rounded-[32px] bg-panel p-2 md:block">
+        {/* Laptop and up: a real table. It needs ~820px, so tablets get the card list. */}
+        <div className="clay mt-10 hidden overflow-hidden rounded-[32px] bg-panel p-2 lg:block">
           <table className="w-full text-sm">
-            <caption className="sr-only">Comparison of all Skillizee kits</caption>
+            <caption className="sr-only">Comparison of all {BRAND.name} kits</caption>
             <thead>
               <tr className="text-left font-display text-sm font-semibold text-ink-muted">
                 <th scope="col" className="px-5 py-3.5">Kit</th>
@@ -77,21 +78,21 @@ export default function ComparisonTable() {
           </table>
         </div>
 
-        {/* Phones: one tappable row per kit instead of a sideways-scrolling table. */}
-        <ul className="mt-8 grid gap-3 md:hidden">
+        {/* Phones and tablets: one tappable card per kit instead of a sideways-scrolling table. */}
+        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:hidden">
           {products.map((p) => (
-            <li key={p.id}>
+            <li key={p.id} className="min-w-0">
               <Link href={`/kits/${p.slug}`} className="clay-sm flex items-center gap-3 rounded-[22px] bg-panel p-3 active:scale-[0.98]">
                 <div className="relative h-14 w-16 shrink-0 overflow-hidden rounded-2xl bg-panel-muted">
                   <Image src={thumb(p)} alt="" fill sizes="56px" className="object-cover" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-display font-semibold text-ink">{p.name}</p>
+                  <p className="line-clamp-2 font-display font-semibold leading-tight text-ink">{p.name}</p>
                   <p className="text-xs font-semibold tabular-nums text-ink-muted">
                     Ages {p.ageRange}, {p.materials.length} items
                   </p>
                 </div>
-                <div className="text-right tabular-nums">
+                <div className="shrink-0 text-right tabular-nums">
                   <p className="font-display font-semibold text-ink">{formatINR(p.price)}</p>
                   <p className="text-xs font-bold text-accent-ink">{formatINR(p.profit)} profit</p>
                 </div>

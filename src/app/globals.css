@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Skillizee "clay" design system.
+ * Tinkupop "clay" design system.
  *
  * Colour rule: green is the action colour (buttons, profit). Each kit category
  * owns one playful colour (grow, build, create, design) and two helpers (sun, sky)
@@ -227,6 +227,52 @@
     outline: 3px solid var(--sky);
     outline-offset: 3px;
     border-radius: 12px;
+  }
+}
+
+/*
+ * Clay scrollbars, site-wide (page, cart drawer, any scroll area).
+ * Chrome, Edge and Safari use the ::-webkit-scrollbar rules for a rounded,
+ * padded pill. They ignore those rules on any element that sets
+ * scrollbar-color, so the standard properties are only applied in browsers
+ * without ::-webkit-scrollbar (Firefox).
+ */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  /* The transparent border + padding-box clip leaves a floating pill. */
+  border: 4px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--grow) 65%, transparent) padding-box;
+  box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.35);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--grow) padding-box;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--accent-hover) padding-box;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--grow) 65%, transparent) transparent;
   }
 }
 

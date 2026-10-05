@@ -8,10 +8,12 @@ import { Product } from "@/types/product";
 import { useCartStore } from "@/store/cartStore";
 import { formatINR } from "@/lib/format";
 import { categoryTheme, swatches } from "@/lib/theme";
+import Burst from "./Burst";
 
 export default function ProductCard({ product, index }: { product: Product; index: number }) {
   const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
+  const [bursts, setBursts] = useState(0);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -24,6 +26,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
   const handleAdd = () => {
     addItem(product);
     setAdded(true);
+    setBursts((n) => n + 1);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setAdded(false), 1600);
   };
@@ -106,7 +109,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
               type="button"
               onClick={handleAdd}
               aria-label={added ? `${product.name} added to cart` : `Add ${product.name} to cart`}
-              className={`relative z-10 inline-flex shrink-0 items-center gap-1.5 rounded-2xl px-4 py-2.5 font-display font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${
+              className={`relative z-10 inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-2xl px-4 py-2.5 font-display font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${
                 added ? "clay-pressed bg-accent-soft text-accent-ink" : "clay-sm bg-accent text-on-accent"
               }`}
             >
@@ -116,6 +119,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
                 <Plus className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
               )}
               {added ? "Added" : "Add"}
+              <Burst fire={bursts} />
             </button>
           </div>
           <span className="sr-only" aria-live="polite">

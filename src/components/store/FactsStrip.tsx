@@ -20,20 +20,20 @@ const facts = [
 export default function FactsStrip() {
   return (
     <section aria-label="Kit facts" className="px-4 sm:px-6 lg:px-8">
-      <dl className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+      <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
         {facts.map((f, i) => (
           <div
             key={f.label}
-            className={`clay flex items-center gap-4 rounded-[28px] p-5 ${f.swatch.chip} ${
+            className={`clay flex flex-col items-start gap-3 rounded-[24px] p-4 sm:flex-row sm:items-center sm:gap-4 sm:rounded-[28px] sm:p-5 ${f.swatch.chip} ${
               i % 2 === 1 ? "lg:translate-y-3" : ""
             }`}
           >
-            <span className={`clay-sm flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${f.swatch.solid}`}>
-              <f.icon className="h-7 w-7" strokeWidth={2.5} aria-hidden="true" />
+            <span className={`clay-sm flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl sm:h-14 sm:w-14 ${f.swatch.solid}`}>
+              <f.icon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2.5} aria-hidden="true" />
             </span>
             <div className="flex min-w-0 flex-col-reverse">
-              <dt className="text-sm font-semibold">{f.label}</dt>
-              <dd className="font-display text-2xl font-bold tabular-nums leading-tight">{f.value}</dd>
+              <dt className="text-[13px] font-semibold leading-snug sm:text-sm">{f.label}</dt>
+              <dd className="font-display text-xl font-bold tabular-nums leading-tight min-[380px]:text-2xl">{f.value}</dd>
             </div>
           </div>
         ))}

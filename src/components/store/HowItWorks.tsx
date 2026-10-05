@@ -3,6 +3,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Package, Paintbrush, IndianRupee, Megaphone } from "lucide-react";
 import { swatches } from "@/lib/theme";
+import { BRAND } from "@/lib/brand";
 
 const steps = [
   {
@@ -27,21 +28,21 @@ const steps = [
     icon: Megaphone,
     swatch: swatches.design,
     title: "Earn & Pitch",
-    desc: "Track your profit and record a 30-second pitch to earn your Skillizee certificate.",
+    desc: `Track your profit and record a 30-second pitch to earn your ${BRAND.name} certificate.`,
   },
 ];
 
 export default function HowItWorks() {
   return (
     <section id="how-it-works" className="px-3 py-10 sm:px-5 md:py-16">
-      <div className="clay mx-auto max-w-7xl rounded-[44px] bg-grow-soft px-5 py-14 sm:px-10 md:py-20 lg:px-14">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-14">
+      <div className="clay mx-auto max-w-7xl rounded-[32px] bg-grow-soft px-4 py-10 sm:rounded-[44px] sm:px-10 sm:py-14 md:py-20 lg:px-14">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-5">
-            <h2 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">How It Works</h2>
-            <p className="mt-3 max-w-[44ch] text-lg font-medium text-ink-muted">
+            <h2 className="font-display text-[2.1rem] font-bold leading-tight tracking-tight text-ink sm:text-5xl">How It Works</h2>
+            <p className="mt-3 max-w-[44ch] text-base font-medium text-ink-muted sm:text-lg">
               From unboxing to earning real profit in 4 simple steps.
             </p>
-            <div className="clay mt-10 -rotate-2 rounded-[32px] bg-panel p-3">
+            <div className="clay mx-1 mt-8 -rotate-2 rounded-[28px] bg-panel p-2.5 sm:mx-0 sm:mt-10 sm:rounded-[32px] sm:p-3">
               <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] bg-panel-muted">
                 <Image
                   src="/images/kits/microgreens-stylized.jpg"
@@ -54,7 +55,7 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          <ol className="relative grid grid-cols-1 gap-5 sm:grid-cols-2 lg:col-span-7">
+          <ol className="relative grid grid-cols-1 gap-5 sm:grid-cols-2 sm:pb-8 lg:col-span-7 lg:pb-0">
             {steps.map((step, i) => (
               <motion.li
                 key={step.title}
@@ -62,7 +63,7 @@ export default function HowItWorks() {
                 whileInView={{ opacity: 1, y: 0, rotate: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ type: "spring", stiffness: 120, damping: 15, delay: i * 0.08 }}
-                className={`clay relative rounded-[30px] bg-panel p-6 ${i % 2 === 1 ? "sm:translate-y-8" : ""}`}
+                className={`clay relative rounded-[26px] bg-panel p-5 sm:rounded-[30px] sm:p-6 ${i % 2 === 1 ? "sm:translate-y-8" : ""}`}
               >
                 <span
                   aria-hidden="true"

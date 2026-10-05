@@ -198,7 +198,7 @@ export const products: Product[] = [
     name: "Paper App Studio",
     tagline: "Design a phone app on paper, pitch it to mentors",
     description:
-      "The child spots a real problem (tiffin swapping, lost school items, finding a cricket team), designs a phone app for it on paper screens, tests it with 5 people and pitches it live to Skillizee mentors. No coding and no screen needed.",
+      "The child spots a real problem (tiffin swapping, lost school items, finding a cricket team), designs a phone app for it on paper screens, tests it with 5 people and pitches it live to Tinkupop mentors. No coding and no screen needed.",
     ageRange: "10-16",
     price: 599,
     profit: 258,
