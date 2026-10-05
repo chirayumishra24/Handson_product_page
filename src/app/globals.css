@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+/*
+ * Skillizee "clay" design system.
+ *
+ * Colour rule: green is the action colour (buttons, profit). Each kit category
+ * owns one playful colour (grow, build, create, design) and two helpers (sun, sky)
+ * decorate facts and badges. Every colour has three steps:
+ *   solid - icon bubbles and decoration
+ *   soft  - tinted surfaces
+ *   ink   - text on soft or panel surfaces (WCAG AA in both themes)
+ */
+:root {
+  --bg: #f4f7ff;
+  --dot: #dde4f6;
+  --panel: #ffffff;
+  --panel-muted: #eef2fb;
+  --ink: #1b1f3b;
+  --ink-muted: #565d7f;
+  --line: #dfe5f3;
+
+  --accent: #2fbf71;
+  --accent-hover: #27ad64;
+  --accent-soft: #d9f7e6;
+  --accent-ink: #11743f;
+  --on-accent: #0f2a1c;
+
+  --grow: #2fbf71;
+  --grow-soft: #d9f7e6;
+  --grow-ink: #11743f;
+  --build: #ff8a3d;
+  --build-soft: #ffe6d3;
+  --build-ink: #a34306;
+  --create: #ff5c9a;
+  --create-soft: #ffdeea;
+  --create-ink: #ac1656;
+  --design: #8b6cff;
+  --design-soft: #e8e2ff;
+  --design-ink: #5636d1;
+  --sun: #ffc83d;
+  --sun-soft: #fff1c7;
+  --sun-ink: #855600;
+  --sky: #3da5ff;
+  --sky-soft: #dcefff;
+  --sky-ink: #0a5ba8;
+
+  /* Clay lighting: a white highlight top-left, a shade bottom-right, a soft tinted drop. */
+  --clay-hi: rgb(255 255 255 / 0.75);
+  --clay-lo: rgb(40 52 110 / 0.12);
+  --clay-drop: rgb(58 72 150 / 0.2);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12162b;
+    --dot: #1e2443;
+    --panel: #1c2240;
+    --panel-muted: #252c50;
+    --ink: #eef0ff;
+    --ink-muted: #a8aed0;
+    --line: #2e3660;
+
+    --accent: #4ade80;
+    --accent-hover: #6ee7a0;
+    --accent-soft: #173a2b;
+    --accent-ink: #7ce8a8;
+    --on-accent: #0f2a1c;
+
+    --grow-soft: #173a2b;
+    --grow-ink: #7ce8a8;
+    --build-soft: #45291a;
+    --build-ink: #ffb27f;
+    --create-soft: #46203a;
+    --create-ink: #ff9cc2;
+    --design-soft: #2e2758;
+    --design-ink: #bcadff;
+    --sun-soft: #3e3418;
+    --sun-ink: #ffd873;
+    --sky-soft: #1a3152;
+    --sky-ink: #8cc8ff;
+
+    --clay-hi: rgb(255 255 255 / 0.09);
+    --clay-lo: rgb(0 0 0 / 0.35);
+    --clay-drop: rgb(0 0 0 / 0.5);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel-muted: var(--panel-muted);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+
+  --color-grow: var(--grow);
+  --color-grow-soft: var(--grow-soft);
+  --color-grow-ink: var(--grow-ink);
+  --color-build: var(--build);
+  --color-build-soft: var(--build-soft);
+  --color-build-ink: var(--build-ink);
+  --color-create: var(--create);
+  --color-create-soft: var(--create-soft);
+  --color-create-ink: var(--create-ink);
+  --color-design: var(--design);
+  --color-design-soft: var(--design-soft);
+  --color-design-ink: var(--design-ink);
+  --color-sun: var(--sun);
+  --color-sun-soft: var(--sun-soft);
+  --color-sun-ink: var(--sun-ink);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-sky-ink: var(--sky-ink);
+
+  --font-sans: var(--font-nunito), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-fredoka), var(--font-nunito), system-ui, sans-serif;
+}
+
+/* Puffy clay surface. Pair with a background colour and a large radius. */
+@utility clay {
+  box-shadow:
+    inset 5px 5px 12px var(--clay-hi),
+    inset -5px -7px 14px var(--clay-lo),
+    0 20px 36px -16px var(--clay-drop);
+}
+
+@utility clay-sm {
+  box-shadow:
+    inset 3px 3px 7px var(--clay-hi),
+    inset -3px -4px 8px var(--clay-lo),
+    0 10px 20px -10px var(--clay-drop);
+}
+
+/* Pushed-in clay, for the active filter or a pressed button. */
+@utility clay-pressed {
+  box-shadow:
+    inset 4px 5px 10px var(--clay-lo),
+    inset -3px -3px 8px var(--clay-hi);
+}
+
+/* Highlighter swipe behind a word; wraps cleanly across lines. */
+@utility marker {
+  background-image: linear-gradient(transparent 58%, color-mix(in srgb, var(--sun) 60%, transparent) 58%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  border-radius: 0.3em;
+  padding-inline: 0.08em;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--tilt, 0deg));
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@utility animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@utility animate-pop {
+  animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@layer base {
+  * {
+    @apply border-line;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-bg text-ink antialiased;
+    font-family: var(--font-sans);
+    /* Notebook dot grid, so the page feels like a maker's worksheet. */
+    background-image: radial-gradient(var(--dot) 1.2px, transparent 1.2px);
+    background-size: 26px 26px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Anchored sections clear the floating navbar. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  a,
+  button,
+  summary {
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--sky);
+    outline-offset: 3px;
+    border-radius: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
