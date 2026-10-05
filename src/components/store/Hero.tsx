@@ -17,7 +17,7 @@ const rise = (delay: number) => ({
 const toys: { icon: LucideIcon; className: string; tilt: string; delay: string; size: string }[] = [
   { icon: Sprout, className: "bg-grow text-white -left-3 top-6 sm:-left-6", tilt: "-10deg", delay: "0s", size: "h-16 w-16" },
   { icon: Rocket, className: "bg-sky text-white -top-6 right-10", tilt: "12deg", delay: "0.8s", size: "h-14 w-14" },
-  { icon: Coins, className: "bg-sun text-ink -right-3 top-1/2 sm:-right-6", tilt: "8deg", delay: "1.6s", size: "h-16 w-16" },
+  { icon: Coins, className: "bg-sun text-on-sun -right-3 top-1/2 sm:-right-6", tilt: "8deg", delay: "1.6s", size: "h-16 w-16" },
   { icon: Palette, className: "bg-create text-white -bottom-6 right-16 hidden sm:flex", tilt: "-8deg", delay: "2.2s", size: "h-14 w-14" },
   { icon: Lightbulb, className: "bg-design text-white left-[42%] -top-8 hidden lg:flex", tilt: "-6deg", delay: "1.1s", size: "h-12 w-12" },
 ];
@@ -40,7 +40,9 @@ export default function Hero() {
           </motion.p>
 
           <motion.h1
-            {...rise(0.06)}
+            initial={{ y: 18 }}
+            animate={{ y: 0 }}
+            transition={{ ...spring, delay: 0.06 }}
             className="mt-6 font-display text-[2.3rem] font-bold leading-[1.08] tracking-tight text-ink min-[380px]:text-[2.6rem] sm:text-6xl xl:text-[4rem]"
           >
             Turn Your Child Into a <span className="marker">Young Entrepreneur</span>
@@ -74,8 +76,8 @@ export default function Hero() {
 
         <div className="relative mx-2 lg:col-span-6 lg:mx-0 lg:ml-6">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
-            animate={{ opacity: 1, scale: 1, rotate: 2 }}
+            initial={{ scale: 0.94, rotate: -4 }}
+            animate={{ scale: 1, rotate: 2 }}
             transition={{ ...spring, delay: 0.1 }}
             className="clay rounded-[36px] bg-panel p-3"
           >

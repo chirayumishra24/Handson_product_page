@@ -40,6 +40,8 @@
   --sun: #ffc83d;
   --sun-soft: #fff1c7;
   --sun-ink: #855600;
+  /* Text/icons on solid sun yellow: always dark, because yellow stays bright in dark mode. */
+  --on-sun: #1b1f3b;
   --sky: #3da5ff;
   --sky-soft: #dcefff;
   --sky-ink: #0a5ba8;
@@ -115,6 +117,7 @@
   --color-sun: var(--sun);
   --color-sun-soft: var(--sun-soft);
   --color-sun-ink: var(--sun-ink);
+  --color-on-sun: var(--on-sun);
   --color-sky: var(--sky);
   --color-sky-soft: var(--sky-soft);
   --color-sky-ink: var(--sky-ink);

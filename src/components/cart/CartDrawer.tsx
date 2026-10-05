@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { formatINR } from "@/lib/format";
+import { BRAND } from "@/lib/brand";
+import AskGrownUp from "@/components/store/AskGrownUp";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -105,7 +107,7 @@ export default function CartDrawer() {
             <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6">
               {items.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
-                  <span className="clay animate-float flex h-20 w-20 items-center justify-center rounded-[26px] bg-sun text-ink">
+                  <span className="clay animate-float flex h-20 w-20 items-center justify-center rounded-[26px] bg-sun text-on-sun">
                     <ShoppingBag className="h-9 w-9" strokeWidth={2.25} aria-hidden="true" />
                   </span>
                   <p className="mt-6 font-display text-xl font-semibold text-ink">Your cart is empty</p>
@@ -195,6 +197,12 @@ export default function CartDrawer() {
                 >
                   Proceed to Checkout
                 </Link>
+                <AskGrownUp
+                  label="Ask a Grown-Up to Buy"
+                  text={`I picked ${count === 1 ? "a kit" : `${count} kits`} from ${BRAND.name}! Can we get ${count === 1 ? "it" : "them"}?`}
+                  path={`/picks?items=${items.map((i) => `${i.product.id}x${i.quantity}`).join(",")}`}
+                  className="w-full"
+                />
                 {confirmClear ? (
                   <div className="flex items-center justify-center gap-3 text-sm">
                     <span className="font-semibold text-ink-muted">Remove all kits?</span>

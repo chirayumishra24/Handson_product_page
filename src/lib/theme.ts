@@ -16,7 +16,7 @@ export const swatches = {
   build: { chip: "bg-build-soft text-build-ink", solid: "bg-build text-white", text: "text-build-ink" },
   create: { chip: "bg-create-soft text-create-ink", solid: "bg-create text-white", text: "text-create-ink" },
   design: { chip: "bg-design-soft text-design-ink", solid: "bg-design text-white", text: "text-design-ink" },
-  sun: { chip: "bg-sun-soft text-sun-ink", solid: "bg-sun text-ink", text: "text-sun-ink" },
+  sun: { chip: "bg-sun-soft text-sun-ink", solid: "bg-sun text-on-sun", text: "text-sun-ink" },
   sky: { chip: "bg-sky-soft text-sky-ink", solid: "bg-sky text-white", text: "text-sky-ink" },
 } satisfies Record<string, Swatch>;
 

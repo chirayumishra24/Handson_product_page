@@ -52,7 +52,7 @@ export default function Navbar() {
               type="button"
               onClick={toggleCart}
               aria-label={cartLabel}
-              className="clay-sm relative flex h-12 w-12 items-center justify-center rounded-2xl bg-sun text-ink transition-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
+              className="clay-sm relative flex h-12 w-12 items-center justify-center rounded-2xl bg-sun text-on-sun transition-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
             >
               <ShoppingCart className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
               {hydrated && count > 0 && (

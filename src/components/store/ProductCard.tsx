@@ -14,11 +14,13 @@ export default function ProductCard({ product, index }: { product: Product; inde
   const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
   const [bursts, setBursts] = useState(0);
+  const [hovered, setHovered] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const theme = categoryTheme[product.category];
+  const soldOut = !product.inStock;
   const swatch = swatches[theme.swatch];
   const mainImage = product.images.realistic || product.images.stylized || "";
   const altImage = product.images.stylized && product.images.realistic ? product.images.stylized : null;
@@ -38,6 +40,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
       viewport={{ once: true, margin: "-40px" }}
       transition={{ type: "spring", stiffness: 140, damping: 18, delay: Math.min(index, 4) * 0.06 }}
       className="group relative"
+      onPointerEnter={(e) => e.pointerType === "mouse" && setHovered(true)}
     >
       <div
         className={`clay flex h-full flex-col rounded-[32px] bg-panel p-3 transition-transform duration-300 group-hover:-translate-y-1.5 ${
@@ -53,7 +56,7 @@ export default function ProductCard({ product, index }: { product: Product; inde
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
           {/* Hovering shows the flat-lay of what is in the box. */}
-          {altImage && (
+          {altImage && hovered && (
             <Image
               src={altImage}
               alt=""
@@ -70,6 +73,9 @@ export default function ProductCard({ product, index }: { product: Product; inde
               <theme.icon className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
               Ages {product.ageRange}
             </span>
+            {soldOut && (
+              <span className={`inline-flex items-center rounded-full px-2.5 py-1 ${swatches.create.chip}`}>Sold out</span>
+            )}
             {product.badge && (
               <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 ${swatches.sun.chip}`}>
                 <Star className="h-3.5 w-3.5 fill-current" strokeWidth={2} aria-hidden="true" />
@@ -108,17 +114,28 @@ export default function ProductCard({ product, index }: { product: Product; inde
             <button
               type="button"
               onClick={handleAdd}
-              aria-label={added ? `${product.name} added to cart` : `Add ${product.name} to cart`}
-              className={`relative z-10 inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-2xl px-4 py-2.5 font-display font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${
-                added ? "clay-pressed bg-accent-soft text-accent-ink" : "clay-sm bg-accent text-on-accent"
+              disabled={soldOut}
+              aria-label={
+                soldOut
+                  ? `${product.name} is sold out`
+                  : added
+                    ? `${product.name} added to cart`
+                    : `Add ${product.name} to cart`
+              }
+              className={`relative z-10 inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-2xl px-4 py-2.5 font-display font-semibold transition-transform ${
+                soldOut
+                  ? "clay-pressed cursor-not-allowed bg-panel-muted text-ink-muted"
+                  : added
+                    ? "clay-pressed bg-accent-soft text-accent-ink"
+                    : "clay-sm bg-accent text-on-accent hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
               }`}
             >
-              {added ? (
+              {soldOut ? null : added ? (
                 <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
               ) : (
                 <Plus className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
               )}
-              {added ? "Added" : "Add"}
+              {soldOut ? "Sold Out" : added ? "Added" : "Add"}
               <Burst fire={bursts} />
             </button>
           </div>

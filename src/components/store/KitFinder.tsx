@@ -49,7 +49,7 @@ export default function KitFinder() {
     <section aria-labelledby="finder-title" className="px-3 py-6 sm:px-5 md:py-10">
       <div className="clay mx-auto max-w-7xl rounded-[32px] bg-sun-soft px-4 py-10 sm:rounded-[44px] sm:px-10 sm:py-14 lg:px-14">
         <div className="flex items-start gap-4">
-          <span className="clay-sm hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-sun text-ink sm:flex">
+          <span className="clay-sm hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-sun text-on-sun sm:flex">
             <Wand2 className="h-7 w-7" strokeWidth={2.5} aria-hidden="true" />
           </span>
           <div>
@@ -75,7 +75,7 @@ export default function KitFinder() {
                     aria-pressed={active}
                     onClick={() => setAge(a)}
                     className={`min-h-12 rounded-2xl px-5 font-display text-base font-semibold transition-transform active:scale-95 ${
-                      active ? "clay-pressed bg-sun text-ink" : "clay-sm bg-panel text-ink hover:-translate-y-0.5"
+                      active ? "clay-pressed bg-sun text-on-sun" : "clay-sm bg-panel text-ink hover:-translate-y-0.5"
                     }`}
                   >
                     {a.label}
@@ -167,7 +167,7 @@ export default function KitFinder() {
                         <span className="min-w-0 flex-1">
                           <span className="block font-display text-lg font-semibold leading-tight text-ink">{p.name}</span>
                           <span className="mt-1 block text-sm font-semibold text-ink-muted">
-                            Ages {p.ageRange}, {formatINR(p.price)}
+                            Ages {p.ageRange}, {p.inStock ? formatINR(p.price) : "Sold out"}
                           </span>
                           <span className="mt-1 inline-flex items-center gap-1 text-sm font-bold text-accent-ink">
                             See kit

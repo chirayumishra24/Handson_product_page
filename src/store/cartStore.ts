@@ -28,6 +28,8 @@ export const useCartStore = create<CartStore>()(
       isOpen: false,
 
       addItem: (product) => {
+        // Sold-out kits can't be bought, whichever button asked.
+        if (!product.inStock) return;
         const items = get().items;
         const existing = items.find((i) => i.product.id === product.id);
         if (existing) {

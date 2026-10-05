@@ -57,7 +57,9 @@ export default function ComparisonTable() {
                     <span className={`rounded-full px-2.5 py-1 text-xs font-bold tabular-nums ${chip(p)}`}>{p.ageRange}</span>
                   </td>
                   <td className="px-5 py-3 text-right font-semibold tabular-nums text-ink-muted">{p.materials.length}</td>
-                  <td className="px-5 py-3 text-right font-display text-base font-semibold tabular-nums text-ink">{formatINR(p.price)}</td>
+                  <td className="px-5 py-3 text-right font-display text-base font-semibold tabular-nums text-ink">
+                    {p.inStock ? formatINR(p.price) : <span className="text-sm text-create-ink">Sold out</span>}
+                  </td>
                   <td className="px-5 py-3 text-right">
                     <span className="rounded-full bg-accent-soft px-3 py-1 text-sm font-bold tabular-nums text-accent-ink">
                       {formatINR(p.profit)}
@@ -93,7 +95,7 @@ export default function ComparisonTable() {
                   </p>
                 </div>
                 <div className="shrink-0 text-right tabular-nums">
-                  <p className="font-display font-semibold text-ink">{formatINR(p.price)}</p>
+                  <p className="font-display font-semibold text-ink">{p.inStock ? formatINR(p.price) : "Sold out"}</p>
                   <p className="text-xs font-bold text-accent-ink">{formatINR(p.profit)} profit</p>
                 </div>
               </Link>

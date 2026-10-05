@@ -94,7 +94,7 @@ export default function CheckoutClient() {
   if (state.status === "success") {
     return (
       <div className="clay relative mx-auto max-w-xl rounded-[36px] bg-panel px-6 py-12 text-center sm:px-10">
-        <span className="clay relative mx-auto flex h-20 w-20 items-center justify-center rounded-[26px] bg-sun text-ink">
+        <span className="clay relative mx-auto flex h-20 w-20 items-center justify-center rounded-[26px] bg-sun text-on-sun">
           <PartyPopper className="h-10 w-10" strokeWidth={2.25} aria-hidden="true" />
           <Burst fire={1} />
         </span>
@@ -125,7 +125,7 @@ export default function CheckoutClient() {
   if (items.length === 0) {
     return (
       <div className="clay mx-auto max-w-xl rounded-[36px] bg-panel px-6 py-12 text-center">
-        <span className="clay animate-float mx-auto flex h-20 w-20 items-center justify-center rounded-[26px] bg-sun text-ink">
+        <span className="clay animate-float mx-auto flex h-20 w-20 items-center justify-center rounded-[26px] bg-sun text-on-sun">
           <ShoppingBag className="h-9 w-9" strokeWidth={2.25} aria-hidden="true" />
         </span>
         <h1 className="mt-6 font-display text-3xl font-bold text-ink">Your cart is empty</h1>

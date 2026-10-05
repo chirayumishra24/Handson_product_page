@@ -10,6 +10,7 @@ import { formatINR } from "@/lib/format";
 import { categoryTheme, swatches } from "@/lib/theme";
 import ProductCard from "@/components/store/ProductCard";
 import Burst from "@/components/store/Burst";
+import AskGrownUp from "@/components/store/AskGrownUp";
 import { BRAND } from "@/lib/brand";
 
 type ImageKey = "realistic" | "stylized";
@@ -31,7 +32,8 @@ export default function ProductDetailClient({ product, related }: { product: Pro
   // A huge top margin counts the marker as "seen" once it is anywhere above the
   // bottom of the screen, so the bar stays hidden over the footer.
   const endInView = useInView(endRef, { margin: "100000px 0px 0px 0px" });
-  const showBar = !buyInView && !endInView;
+  const soldOut = !product.inStock;
+  const showBar = !buyInView && !endInView && !soldOut;
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
@@ -74,8 +76,8 @@ export default function ProductDetailClient({ product, related }: { product: Pro
         <div className="mt-6 grid grid-cols-1 gap-10 sm:mt-8 lg:grid-cols-12 lg:gap-14">
           {/* Gallery */}
           <motion.div
-            initial={{ opacity: 0, y: 20, rotate: -2 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
+            initial={{ y: 20, rotate: -2 }}
+            animate={{ y: 0, rotate: 0 }}
             transition={spring}
             className="lg:col-span-7"
           >
@@ -130,6 +132,9 @@ export default function ProductDetailClient({ product, related }: { product: Pro
                 <theme.icon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
                 Ages {product.ageRange}
               </span>
+              {soldOut && (
+                <span className={`inline-flex items-center rounded-full px-3 py-1.5 ${swatches.create.chip}`}>Sold out</span>
+              )}
               {product.badge && (
                 <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 ${swatches.sun.chip}`}>
                   <Star className="h-4 w-4 fill-current" strokeWidth={2} aria-hidden="true" />
@@ -167,23 +172,28 @@ export default function ProductDetailClient({ product, related }: { product: Pro
                 <button
                   type="button"
                   onClick={handleAdd}
-                  className={`relative flex flex-1 items-center justify-center gap-2 rounded-[22px] py-4 font-display text-lg font-semibold transition-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] ${
-                    added ? "clay-pressed bg-accent-soft text-accent-ink" : "clay bg-accent text-on-accent"
+                  disabled={soldOut}
+                  className={`relative flex flex-1 items-center justify-center gap-2 rounded-[22px] py-4 font-display text-lg font-semibold transition-transform ${
+                    soldOut
+                      ? "clay-pressed cursor-not-allowed bg-panel-muted text-ink-muted"
+                      : added
+                        ? "clay-pressed bg-accent-soft text-accent-ink"
+                        : "clay bg-accent text-on-accent hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
                   }`}
                 >
-                  {added ? (
+                  {soldOut ? null : added ? (
                     <Check className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
                   ) : (
                     <ShoppingCart className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
                   )}
-                  {added ? "Added to Cart" : "Add to Cart"}
+                  {soldOut ? "Sold Out" : added ? "Added to Cart" : "Add to Cart"}
                   <Burst fire={bursts} />
                 </button>
                 {added && (
                   <button
                     type="button"
                     onClick={() => setCartOpen(true)}
-                    className="clay rounded-[22px] bg-sun px-6 py-4 font-display text-lg font-semibold text-ink transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+                    className="clay rounded-[22px] bg-sun px-6 py-4 font-display text-lg font-semibold text-on-sun transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
                   >
                     View Cart
                   </button>
@@ -192,6 +202,11 @@ export default function ProductDetailClient({ product, related }: { product: Pro
               <span className="sr-only" aria-live="polite">
                 {added ? `${product.name} added to cart` : ""}
               </span>
+              <AskGrownUp
+                text={`Can I get the ${product.name} kit from ${BRAND.name}? ${product.tagline}.`}
+                path={`/kits/${product.slug}`}
+                className="mt-3 w-full"
+              />
             </div>
 
             <ul className="mt-8 grid gap-3">
